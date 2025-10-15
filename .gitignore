@@ -24,6 +24,12 @@ wheels/
 *.egg
 
 # Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
 .venv
 .env
 
@@ -34,6 +40,18 @@ wheels/
 *.swo
 *~
 
+# Configuration files with sensitive data
+config.json
+.env
+
+# Output files
+output/
+*.csv
+*.xlsx
+*.xls
+
+# Logs
+*.log
 # Config files with credentials
 config.ini
 
