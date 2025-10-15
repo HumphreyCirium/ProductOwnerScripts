@@ -1,0 +1,22 @@
+{
+  "jira": {
+    "url": "https://your-instance.atlassian.net",
+    "email": "your-email@example.com",
+    "api_token": "YOUR_API_TOKEN_HERE"
+  },
+  "tempo": {
+    "api_token": "YOUR_TEMPO_API_TOKEN_HERE"
+  },
+  "parameters": {
+    "date_from": "2024-01-01",
+    "date_to": "2024-01-31",
+    "user_ids": [],
+    "account_keys": [],
+    "project_keys": []
+  },
+  "output": {
+    "format": "excel",
+    "directory": "output",
+    "filename_prefix": "tempo_report"
+  }
+}
