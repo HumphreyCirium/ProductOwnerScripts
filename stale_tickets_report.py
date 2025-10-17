@@ -7,6 +7,7 @@ import configparser
 import sys
 from datetime import datetime, timedelta
 import requests
+import csv
 from requests.auth import HTTPBasicAuth
 
 
@@ -144,6 +145,21 @@ def main():
             total_stale += len(stale_tickets)
         else:
             print("No stale tickets found.\n")
+
+        # Export issues to CSV
+        output_path = "C:\\Users\\pasleyh\\OneDrive - Reed Elsevier Group ICO Reed Elsevier Inc\\Documents\\Scripts\\Stale Tickets Report.csv"
+        with open(output_path, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(["ID", "Summary", "Status"])
+            for issue in stale_tickets:
+                info = format_ticket_info(issue, config['server'])                
+                issue_id = info['key']
+                summary = info['summary']
+                status = info['status']
+                updated = info['updated']
+
+                writer.writerow([issue_id, summary, status,updated])
+        print("Issues exported to Stale Tickets Report.csv")
     
     print("=" * 80)
     print(f"Total stale tickets across all boards: {total_stale}")
