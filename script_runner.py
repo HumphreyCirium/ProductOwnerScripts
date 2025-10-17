@@ -21,19 +21,22 @@ class ScriptRunner:
         
         # Define script descriptions
         script_descriptions = {
-            'da_tickets_status_changed_in_sprint.py': 'DA Tickets Status Changed in Sprint - Find tickets with status changes in the last sprint',
+            'da_tickets_status_changed_in_sprint.py': 'DA Tickets Status Changed in Sprint - Find tickets with status changes in the last sprint (Original)',
+            'da_tickets_status_changed_refactored.py': 'DA Tickets Status Changed in Sprint - Find tickets with status changes in the last sprint (Refactored)',
             'my_tickets_report.py': 'My Tickets Report - Get tickets assigned to current user from DI and CCS boards',
-            'stale_tickets_report.py': 'Stale Tickets Report - Find tickets with no status change in the last 3 months (FDA/FDP boards)',
+            'stale_tickets_report.py': 'Stale Tickets Report - Find tickets with no status change in the last 3 months (FDA/FDP boards) (Original)',
+            'stale_tickets_refactored.py': 'Stale Tickets Report - Find tickets with no status change in the last 3 months (FDA/FDP boards) (Refactored)',
             'tempo_timesheet_analyzer.py': 'Tempo Timesheet Analyzer - Analyze Tempo timesheet data and generate reports',
-            'test_sample_data.py': 'Test Sample Data - Test script with sample data'
+            'test_sample_data.py': 'Test Sample Data - Test script with sample data',
+            'jira_report_base.py': 'Jira Report Base Library - Shared base class for Jira reporting (Library - Not Executable)'
         }
         
         # Look for Python scripts in the current directory
         for file_path in self.script_dir.glob('*.py'):
             filename = file_path.name
             
-            # Skip this runner script itself
-            if filename == 'script_runner.py':
+            # Skip this runner script itself and the base library
+            if filename in ['script_runner.py', 'jira_report_base.py']:
                 continue
                 
             # Check if the file has a main function or can be run as a script

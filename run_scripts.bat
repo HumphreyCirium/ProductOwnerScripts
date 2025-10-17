@@ -67,7 +67,7 @@ if errorlevel 1 (
     echo ❌ Script runner exited with an error
 ) else (
     echo.
-    echo ✅ Script runner completed successfully
+    echo [SUCCESS] Script runner completed successfully
 )
 
 echo.
