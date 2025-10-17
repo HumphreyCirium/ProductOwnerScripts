@@ -48,6 +48,9 @@ def main():
     }
 
     # Make the request to Jira API
+    print("Requesting:", url)
+    print("Params:", params)
+    print("auth:", HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN))
     response = requests.get(
         url,
         headers=headers,
@@ -55,31 +58,29 @@ def main():
         auth=HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
     )
 
-# Check if the request was successful
-if response.status_code == 200:
-    issues = response.json().get("issues", [])
-    for issue in issues:
-        issue_id = issue["key"]
-        summary = issue["fields"]["summary"]
-        status = issue["fields"]["status"]["name"]
-        print(f"ID: {issue_id}, Summary: {summary}, Status: {status}")
-else:
-    print(f"Failed to retrieve issues: {response.status_code} - {response.text}")
-    
-    
-if response.status_code == 200:
-    issues = response.json().get("issues", [])
-    with open("C:\\Users\\pasleyh\\OneDrive - Reed Elsevier Group ICO Reed Elsevier Inc\\Documents\\Scripts\\da status change.csv", mode="w", newline="", encoding="utf-8") as file:
-        writer = csv.writer(file)
-        writer.writerow(["ID", "Summary", "Status"])
+
+    # Check if the request was successful
+    if response.status_code == 200:
+        issues = response.json().get("issues", [])
         for issue in issues:
             issue_id = issue["key"]
             summary = issue["fields"]["summary"]
             status = issue["fields"]["status"]["name"]
-            writer.writerow([issue_id, summary, status])
-    print("Issues exported to active da status change.csv")
-else:
-    print(f"Failed to retrieve issues: {response.status_code} - {response.text}")
+            print(f"ID: {issue_id}, Summary: {summary}, Status: {status}")
+
+        # Export issues to CSV
+        output_path = "C:\\Users\\pasleyh\\OneDrive - Reed Elsevier Group ICO Reed Elsevier Inc\\Documents\\Scripts\\da status change.csv"
+        with open(output_path, mode="w", newline="", encoding="utf-8") as file:
+            writer = csv.writer(file)
+            writer.writerow(["ID", "Summary", "Status"])
+            for issue in issues:
+                issue_id = issue["key"]
+                summary = issue["fields"]["summary"]
+                status = issue["fields"]["status"]["name"]
+                writer.writerow([issue_id, summary, status])
+        print("Issues exported to active da status change.csv")
+    else:
+        print(f"Failed to retrieve issues: {response.status_code} - {response.text}")
 
 if __name__ == "__main__":
     main()
