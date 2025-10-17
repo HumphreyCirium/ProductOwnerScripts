@@ -1,48 +1,59 @@
+import sys
 import requests
-import datetime
+import configparser
 import csv
 from requests.auth import HTTPBasicAuth
 from datetime import datetime, timedelta
 
-# Replace with your actual Jira credentials and domain
-JIRA_DOMAIN = "https://cirium.atlassian.net"
-JIRA_EMAIL = "humphrey.pasley@cirium.com"
-JIRA_BOARD_NAME = "FDA"
+def load_config():
+    """Load Jira configuration from config.ini file."""
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    
+    if 'jira' not in config:
+        print("Error: config.ini file not found or missing [jira] section.")
+        print("Please create config.ini based on config.ini.example")
+        sys.exit(1)
+    
+    return config['jira']
 
-# Jira API endpoint to search issues
-url = f"{JIRA_DOMAIN}/rest/api/3/search/jql"
+def main():
+    # Load configuration
+    jira_config = load_config()
 
-# JQL query to find issues assigned to the current user on the CCS board
-#jql_query = f'project = "{JIRA_BOARD_NAME}" AND assignee = currentUser()'
+    # Extract credentials and settings from config
+    JIRA_DOMAIN = jira_config.get("server")
+    JIRA_EMAIL = jira_config.get("email")
+    JIRA_API_TOKEN = jira_config.get("api_token")
+    JIRA_BOARD_NAME = jira_config.get("board_name")
 
-one_sprint_ago = (datetime.today() - timedelta(days=27)).strftime('%Y-%m-%d')
+    # Jira API endpoint to search issues
+    url = f"{JIRA_DOMAIN}/rest/api/3/search/jql"
 
-# JQL query to find issues assigned to the current user on the CCS board
-# and exclude 'Done' issues that haven't had a status change in the last month
-jql_query = (
-    f'project = "{JIRA_BOARD_NAME}" AND (status changed AFTER "{one_sprint_ago}")'
+    # Calculate date one sprint ago
+    one_sprint_ago = (datetime.today() - timedelta(days=27)).strftime('%Y-%m-%d')
 
-)
+    # JQL query to find issues with status changes after one sprint ago
+    jql_query = f'project = "{JIRA_BOARD_NAME}" AND (status changed AFTER "{one_sprint_ago}")'
 
-# Request headers
-headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
-}
+    # Request headers and parameters
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
 
-# Request parameters
-params = {
-    "jql": jql_query,
-    "fields": "summary,status"
-}
+    params = {
+        "jql": jql_query,
+        "fields": "summary,status"
+    }
 
-# Make the request to Jira API
-response = requests.get(
-    url,
-    headers=headers,
-    params=params,
-    auth=HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
-)
+    # Make the request to Jira API
+    response = requests.get(
+        url,
+        headers=headers,
+        params=params,
+        auth=HTTPBasicAuth(JIRA_EMAIL, JIRA_API_TOKEN)
+    )
 
 # Check if the request was successful
 if response.status_code == 200:
@@ -70,3 +81,5 @@ if response.status_code == 200:
 else:
     print(f"Failed to retrieve issues: {response.status_code} - {response.text}")
 
+if __name__ == "__main__":
+    main()
