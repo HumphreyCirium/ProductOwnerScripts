@@ -23,7 +23,8 @@ class ScriptRunner:
         script_descriptions = {
             'da_tickets_status_changed_in_sprint.py': 'DA Tickets Status Changed in Sprint - Find tickets with status changes in the last sprint (Original)',
             'da_tickets_status_changed_refactored.py': 'DA Tickets Status Changed in Sprint - Find tickets with status changes in the last sprint (Refactored)',
-            'my_tickets_report.py': 'My Tickets Report - Get tickets assigned to current user from DI and CCS boards',
+            'my_tickets_report.py': 'My Tickets Report - Get tickets assigned to current user from DI and CCS boards (Original)',
+            'my_tickets_report_refactored.py': 'My Tickets Report - Get tickets assigned to current user from DI and CCS boards (Refactored)',
             'stale_tickets_report.py': 'Stale Tickets Report - Find tickets with no status change in the last 3 months (FDA/FDP boards) (Original)',
             'stale_tickets_refactored.py': 'Stale Tickets Report - Find tickets with no status change in the last 3 months (FDA/FDP boards) (Refactored)',
             'tempo_timesheet_analyzer.py': 'Tempo Timesheet Analyzer - Analyze Tempo timesheet data and generate reports',
