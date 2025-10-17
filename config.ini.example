@@ -1,4 +1,0 @@
-[jira]
-server = https://cirium.atlassian.net
-email = your-email@cirium.com
-api_token = your-api-token-here

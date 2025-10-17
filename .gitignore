@@ -42,6 +42,7 @@ ENV/
 
 # Configuration files with sensitive data
 config.json
+config.ini
 .env
 
 # Output files
